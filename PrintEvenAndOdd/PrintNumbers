@@ -1,0 +1,14 @@
+public class Print2Numbers {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		State state = new State(PrinterType.Odd);
+		Printer oddPrinter = new Printer(state,1,2,50,PrinterType.Odd,PrinterType.Even);
+		Printer evenPrinter = new Printer(state,2,2,50,PrinterType.Even,PrinterType.Odd);
+		Thread t1 = new Thread(oddPrinter);
+		Thread t2 = new Thread(evenPrinter);
+		t1.start();
+		t2.start();
+	}
+
+}
