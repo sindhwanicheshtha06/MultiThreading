@@ -1,0 +1,12 @@
+public class State {
+	PrinterType currentPrinter;
+	public State(PrinterType currentPrinter) {
+		this.currentPrinter = currentPrinter;
+	}
+	public PrinterType getPritnerType() {
+		return this.currentPrinter;
+	}
+	public void setPrinterType(PrinterType printer) {
+		this.currentPrinter = printer;
+	}
+}
