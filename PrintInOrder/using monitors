@@ -1,0 +1,42 @@
+class Foo {
+    
+    private int i;
+    private final Object lock = new Object();
+    
+    public Foo() {
+        i = 1;
+    }
+
+    public void first(Runnable printFirst) throws InterruptedException {
+        synchronized(lock){
+            while(i!=1){
+                lock.wait();
+            }
+            printFirst.run();
+            i = 2;
+            lock.notifyAll();
+        }
+    }
+
+    public void second(Runnable printSecond) throws InterruptedException {
+        synchronized(lock){
+            while(i!=2){
+                lock.wait();
+            }
+            printSecond.run();
+            i = 3;
+            lock.notifyAll();
+        }
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        synchronized(lock){
+            while(i!=3){
+                lock.wait();
+            }
+            printThird.run();
+            i = 4;
+            lock.notifyAll();
+        }
+    }
+}
