@@ -1,0 +1,42 @@
+class FooBar {
+    private int n;
+    private Object state = new Object();
+    private int turn;
+
+    public FooBar(int n) {
+        this.n = n;
+        this.turn = 0;
+    }
+
+    public void foo(Runnable printFoo) throws InterruptedException {
+        
+        for (int i = 0; i < n; i++) {
+            
+        	// printFoo.run() outputs "foo". Do not change or remove this line.
+            synchronized(state){
+                while(turn!=0){
+                    state.wait();
+                }
+        	    printFoo.run();
+                turn = 1;
+                state.notifyAll();
+            }
+        }
+    }
+
+    public void bar(Runnable printBar) throws InterruptedException {
+        
+        for (int i = 0; i < n; i++) {
+            
+            // printBar.run() outputs "bar". Do not change or remove this line.
+            synchronized(state){
+                while(turn!=1){
+                    state.wait();
+                }
+                printBar.run();
+                turn = 0;
+                state.notifyAll();
+            }
+        }
+    }
+}
