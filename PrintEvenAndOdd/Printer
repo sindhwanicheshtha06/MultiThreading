@@ -1,0 +1,37 @@
+public class Printer implements Runnable{
+	
+	private State state;
+	private int currentValue;
+	private int step;
+	private int endValue;
+	private PrinterType currentPrinterType;
+	private PrinterType nextPrinterType;
+	
+	public Printer(State state,int startValue,int step,int endValue,PrinterType currentPrinterType,PrinterType nextPrinterType) {
+		this.state = state;
+		this.currentValue = startValue;
+		this.step = step;
+		this.endValue = endValue;
+		this.currentPrinterType = currentPrinterType;
+		this.nextPrinterType = nextPrinterType;
+	}
+	
+	public void run() {
+		synchronized(state) {
+			while(currentValue<=endValue) {
+				while(currentPrinterType!=state.getPritnerType()) {
+					try {
+						state.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				System.out.println(currentValue+""+Thread.currentThread().getName());
+			    currentValue +=step;
+			    state.setPrinterType(nextPrinterType);
+			    state.notifyAll();
+			}
+	    }
+	}
+}
