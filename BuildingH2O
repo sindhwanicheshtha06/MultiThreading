@@ -1,0 +1,45 @@
+class H2O {
+    
+    private int numHydrogen;
+    private int numOxygen;
+    private Object state = new Object();
+
+    public H2O() {
+        this.numHydrogen = 0;
+        this.numOxygen = 0;
+    }
+
+    public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
+		
+        // releaseHydrogen.run() outputs "H". Do not change or remove this line.
+       synchronized(state){
+           while(this.numHydrogen==2){
+               state.wait();
+           }
+           numHydrogen++;
+           releaseHydrogen.run();
+           if(this.numHydrogen == 2 && this.numOxygen == 1){
+               this.numHydrogen = 0;
+               this.numOxygen = 0;
+           }
+           state.notifyAll();
+       }
+    }
+
+    public void oxygen(Runnable releaseOxygen) throws InterruptedException {
+        
+        // releaseOxygen.run() outputs "O". Do not change or remove this line.
+        synchronized(state){
+            while(this.numOxygen==1){
+                state.wait();
+            }
+            numOxygen++;
+		    releaseOxygen.run();
+            if(this.numHydrogen == 2 && this.numOxygen == 1){
+               this.numHydrogen = 0;
+               this.numOxygen = 0;
+            }
+            state.notifyAll();
+        }
+    }
+}
